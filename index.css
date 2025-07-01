@@ -132,6 +132,11 @@ html {
 }
 
 body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
   font-family: var(--font-primary);
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -146,12 +151,18 @@ body {
 }
 
 .app-container {
+  max-width: 600px;
+  width: 100%;
+  margin: 40px auto;
+  background: var(--glass-bg);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%; /* Fill body */
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden; /* Ensure app container doesn't scroll */
+  min-height: 80vh;
+  transition: box-shadow 0.3s;
 }
 
 .main-content {
@@ -379,31 +390,29 @@ body.light-mode .action-items-table {
 }
 
 .recording-interface {
-  /* Default state: part of the flex flow in main-content */
-  height: var(--footer-height);
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 12px 20px;
-  background-color: transparent;
-  border-top: 1px solid transparent;
-  flex-shrink: 0; /* Don't shrink this element in flex layout */
-  /* Transition properties for when it becomes .is-live (fixed) */
-  transition: opacity 0.3s ease-out, transform 0.35s ease-out,
-              background-color var(--transition-slow) ease-in-out, /* For bg change */
-              height var(--transition-slow) ease-in-out; /* If height changes for fixed */
-  z-index: 10; /* Base z-index, lower than live state */
+  /* Default state: part of the flex flow in main-content */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 }
 
 .recording-interface.is-live {
-  position: fixed; /* Take out of flow, overlay */
+  position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--live-footer-height); /* Explicit height for the fixed panel */
-  z-index: 1000; /* High z-index to be on top */
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 
   /* Visuals for live state */
   background-color: var(--glass-recording-bg);
@@ -476,9 +485,9 @@ body.light-mode .action-items-table {
   justify-content: center;
   gap: 24px;
   position: relative; /* For .record-text positioning */
-  /* This container is inside .recording-interface.
-     If .recording-interface.is-live has padding-bottom: 20px,
-     this whole control group will be 20px from the bottom of the fixed panel. */
+  width: 100%;
+  justify-content: center;
+
 }
 
 .action-button {
@@ -541,20 +550,60 @@ body.light-mode .record-button.recording .record-button-inner { color: white; }
 .debug-panel.visible { display: block; }
 .hidden { display: none !important; }
 
-@media (max-width: 768px) {
-  .note-area { padding: 16px 0 0; }
-  .note-header { padding: 0 20px 12px; }
-  .note-subheader { padding: 0 20px 12px; flex-direction: column; align-items: stretch; gap: 12px; }
-  .editor-title { padding: 0; font-size: 20px; margin-bottom: 0; margin-right: 0; text-align: left; }
-  .output-tabs-container { width: 100%; }
-  #note-tabs, #meeting-tabs { width: 100%; }
-  #note-tabs .tab-navigation, #meeting-tabs .tab-navigation { width: 100%; }
-  .tab-button { flex-grow: 1; text-align: center; }
+/* ---------------- Footer ---------------- */
+.app-footer {
+  height: var(--footer-height);
+  flex-shrink: 0;
+  background: var(--glass-bg);
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
 
-  .note-content-wrapper { padding: 0 20px 20px; }
-  .recording-interface.is-live { padding-left: 15px; padding-right: 15px; } /* Keep existing responsive padding */
-  #liveWaveformCanvas { max-width: calc(100% - 30px); height: 60px; }
-  .live-recording-timer { font-size: 36px; }
-  .action-button { width: 44px; height: 44px; font-size: 16px; }
-  .record-button { width: 64px; height: 64px; }
+/* Center layout on wider viewports while keeping full‑screen feel on mobile */
+@media (min-width: 769px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .app-container {
+    margin: 40px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    display: block;
+    min-height: 100vh;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+  .app-container {
+    max-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+  }
+  .recording-interface,
+  .recording-interface.is-live {
+    max-width: 100vw;
+    border-radius: 0;
+    left: 0;
+    transform: none;
+  }
+  .app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
 }
