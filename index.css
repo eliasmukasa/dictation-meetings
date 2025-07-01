@@ -558,21 +558,3 @@ body.light-mode .record-button.recording .record-button-inner { color: white; }
   .action-button { width: 44px; height: 44px; font-size: 16px; }
   .record-button { width: 64px; height: 64px; }
 }
-
-.app-footer {
-  width: 100%;
-  padding: 20px 0;
-  text-align: center;
-  font-size: 15px;
-  color: var(--color-text-secondary);
-  background: transparent;
-  letter-spacing: 0.01em;
-  margin-top: auto;
-}
-
-@media (max-width: 768px) {
-  .app-footer {
-    padding: 16px 0;
-    font-size: 14px;
-  }
-}

@@ -938,7 +938,7 @@ class VoiceNotesApp {
         },
       });
 
-      let jsonStr = typeof response.text === 'string' ? response.text.trim() : '';
+      let jsonStr = response.text.trim();
       const fenceRegex = /^```(\w*)?\s*\n?(.*?)\n?\s*```$/s;
       const match = jsonStr.match(fenceRegex);
       if (match && match[2]) {
